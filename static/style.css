@@ -1,57 +1,69 @@
+/* Global styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-}
-
-h1 {
+    background-color: #f4f4f9;
+    }
+    
+    h1 {
+    color: #333;
+    }
+    
+    /* Container styles for pages */
+    .container {
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    }
+    
+    /* Styles for index.html */
+    form {
     margin-bottom: 20px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-input[type="text"],
-input[type="checkbox"],
-button {
-    margin-bottom: 15px;
+    }
+    
+    label {
+    display: block;
+    margin-top: 10px;
+    }
+    
+    input[type="text"], select {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    background-color: #007bff;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    }
+    
+    button {
+    padding: 10px 20px;
+    background-color: #007BFF;
     color: white;
-    cursor: pointer;
     border: none;
-}
-
-button:hover {
+    border-radius: 5px;
+    cursor: pointer;
+    }
+    
+    button
+    {
     background-color: #0056b3;
-}
-
-#output {
-    margin-top: 20px;
-}
+    }
+    
+    .question-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: auto;
+    }
+    
+    .question-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    
