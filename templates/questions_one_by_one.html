@@ -1,0 +1,74 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Questions One by One</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Question {{ current }} of {{ total }}</h1>
+        <div id="question" class="question-content">{{ question }}</div>
+        <form class="question-form" action="{{ url_for('next_question') }}" method="post">
+            <button type="submit" class="next-btn">Next Question</button>
+        </form>
+        <form class="question-form" action="{{ url_for('index') }}" method="get">
+            <button type="submit" class="back-btn">Go Back</button>
+        </form>
+    </div>
+</body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Questions One by One</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Question {{ current }} of {{ total }}</h1>
+        <div id="question" class="question-content">{{ question }}</div>
+        <form class="question-form" action="{{ url_for('next_question') }}" method="post">
+            <label for="answer">Your Answer:</label>
+            <textarea id="answer" name="answer" rows="4" cols="50" required></textarea>
+            <br>
+            <button type="submit" class="next-btn">Next Question</button>
+        </form>
+        <form class="question-form" action="{{ url_for('index') }}" method="get">
+            <button type="submit" class="back-btn">Go Back</button>
+        </form>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Questions One by One</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Question {{ current }} of {{ total }}</h1>
+        <div id="question" class="question-content">{{ question }}</div>
+        <form class="question-form" action="{{ url_for('next_question') }}" method="post">
+            <label for="answer">Your Answer:</label>
+            <input type="text" id="answer" name="answer" required>
+            <button type="submit" class="next-btn">Next Question</button>
+        </form>
+        <form class="question-form" action="{{ url_for('index') }}" method="get">
+            <button type="submit" class="back-btn">Go Back</button>
+        </form>
+        {% if current == total %}
+        <form class="question-form" action="{{ url_for('feedback') }}" method="get">
+            <button type="submit" class="feedback-btn">Provide Feedback</button>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>
