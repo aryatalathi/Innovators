@@ -1,4 +1,5 @@
 import fitz  # PyMuPDF
+import re
 from werkzeug.utils import secure_filename
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session
 from langchain_core.prompts import ChatPromptTemplate
@@ -58,7 +59,10 @@ def generate_interview_content(company, post, resume_text):
 
 def get_model_feedback(question, answer):
     feedback_prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are an interviewer bot that provides only feedback. Based on the answer provided, please give feedback on how well the question was answered and provide suggestions for improvement if necessary."),
+        ("system", "You are an interviewer bot that provides only feedback. Based on the current answer provided, please give FEEDBACK on how well the current question was answered and provide SUGGESTIONS FOR IMPROVEMENT if necessary. DON'T USE any PREVIOUS ANSWERS to evaluate the current answer!! Keep content as subpoints."+
+        "The template for output should be as follows-"+
+        "Feedback: Give your feedback points"+
+        "Suggestions for improvement: Give your suggestions for improvement"),
         ("user", "Question : {question}" + "\n" + "Answer provided by candidate : {answer}")
     ])
     chain = feedback_prompt | model | output_parser
@@ -67,6 +71,25 @@ def get_model_feedback(question, answer):
     feedback = chain.invoke(user_input)
 
     return feedback
+
+def format_feedback(feedback_list):
+    formatted_feedback = {}
+    current_title = None
+
+    for item in feedback_list:
+        # Check if the item is a title (followed by ':')
+        if item.endswith(':'):
+            current_title = item[:-1]  # Remove the colon
+            formatted_feedback[current_title] = []  # Initialize the list for this title
+        elif current_title:
+            # Append the item to the current title's list, stripping any leading asterisks
+            formatted_feedback[current_title].append(item.strip())
+
+    # Join the list items into strings for each section
+    for title, content_list in formatted_feedback.items():
+        formatted_feedback[title] = '\n'.join(content_list)
+
+    return formatted_feedback
 
 @app.route('/')
 def index():
@@ -118,7 +141,14 @@ def feedback():
     for question in questions:
         answer = answers.get(question, "No answer provided")
         feedback = feedback_messages.get(question, "No feedback available")
-        feedback_display.append((question, answer, feedback))
+        print("Before processing feedback : ", feedback)
+        # Process feedback to format it Split feedback into sections based on the '**' pattern
+        feedback_sections = re.split(r'\*\*(.*?)\*\*', feedback)
+        # Remove empty strings and strip whitespace
+        feedback_sections = [section.strip() for section in feedback_sections if section.strip()]
+        #Formatting
+        final_feedback = format_feedback(feedback_sections)
+        feedback_display.append((question, answer, final_feedback))
     return render_template('feedback.html', feedback_messages=feedback_display)
 
 @app.route('/questions_full_list')
