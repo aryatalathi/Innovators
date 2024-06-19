@@ -8,12 +8,15 @@
 <body>
     <div class="container">
         <h1>Interview Question Generator</h1>
-        <form id="interviewForm">
+        <form id="interviewForm" enctype="multipart/form-data">
             <label for="company">Company:</label>
             <input type="text" id="company" name="company" required>
             <br>
             <label for="post">Post:</label>
             <input type="text" id="post" name="post" required>
+            <br>
+            <label for="resume">Resume (PDF):</label>
+            <input type="file" id="resume" name="resume" accept=".pdf" required>
             <br>
             <label for="viewMode">View Mode:</label>
             <select id="viewMode" name="viewMode" required>

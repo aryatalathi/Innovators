@@ -74,21 +74,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('interviewForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const company = document.getElementById('company').value;
-        const post = document.getElementById('post').value;
+        const formData = new FormData();
+        formData.append('company', document.getElementById('company').value);
+        formData.append('post', document.getElementById('post').value);
         const viewMode = document.getElementById('viewMode').value;
+        formData.append('viewMode', viewMode);
+        // Append the file to the FormData object
+        const resumeFile = document.getElementById('resume').files[0];
+        formData.append('resume', resumeFile);
 
         fetch('/generate_interview', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                company: company,
-                post: post,
-                includeAnswers: false,  // Adjust this based on your logic
-                viewMode: viewMode  // Include viewMode in the request body
-            }),
+                method: 'POST',
+                body: formData,
         })
         .then(response => response.json())
         .then(data => {
