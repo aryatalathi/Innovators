@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Interview Question Generator</title>
+    <title>InterviewGenie</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
         body {
             display: flex;
             justify-content: center;
@@ -12,52 +15,110 @@
             height: 100vh;
             margin: 0;
             background-image: linear-gradient(to bottom right, #007bff, #4CAF50);
+            font-family: 'Roboto', sans-serif;
         }
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 800px;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background-color: #f9f9f9;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .form-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .image-container {
+            flex: 1;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
         }
         .center-button {
             text-align: center;
             margin-top: 16px; 
         }
-       
         input[type=text],
-        select {
+        select,
+        input[type=file] {
             width: 100%;
-            box-sizing: border-box; 
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            box-sizing: border-box;
         }
-       
+        input[type=text]:focus,
+        select:focus,
+        input[type=file]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
         form label {
             display: block;
             margin-bottom: 8px;
+            font-weight: bold;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 20px; /* Added to create distance from form fields */
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Interview Question Generator</h1>
-        <form id="interviewForm">
-            <label for="company">Company:</label>
-            <input type="text" id="company" name="company" required>
-            <label for="post">Post:</label>
-            <input type="text" id="post" name="post" required>
-            <label for="resume">Resume (PDF):</label>
-            <input type="file" id="resume" name="resume" accept=".pdf" !required>
-            <label for="viewMode">View Mode:</label>
-            <select id="viewMode" name="viewMode" required>
-                <option value="1">One by One</option>
-                <option value="2">Full List</option>
-            </select>
-            <div class="center-button">
-                <button type="submit">Generate Questions</button>
-            </div>
-        </form>
+        <div class="form-container">
+            <h1> 🤖 InterviewGenie 🤖</h1>
+            <form id="interviewForm">
+                <label for="company">Company:</label>
+                <input type="text" id="company" name="company" required>
+                <label for="post">Post:</label>
+                <input type="text" id="post" name="post" required>
+                <label for="resume">Resume (PDF):</label>
+                <input type="file" id="resume" name="resume" accept=".pdf">
+                <label for="viewMode">View Mode:</label>
+                <select id="viewMode" name="viewMode" required>
+                    <option value="1">One by One</option>
+                    <option value="2">Full List</option>
+                </select>
+                <div class="center-button">
+                    <button type="submit">Generate Questions</button>
+                </div>
+            </form>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='img.jpg') }}" alt="Interview Image">
+        </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
