@@ -4,31 +4,61 @@
     <meta charset="UTF-8">
     <title>Interview Question Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(to bottom right, #007bff, #4CAF50);
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .center-button {
+            text-align: center;
+            margin-top: 16px; 
+        }
+       
+        input[type=text],
+        select {
+            width: 100%;
+            box-sizing: border-box; 
+        }
+       
+        form label {
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Interview Question Generator</h1>
-        <form id="interviewForm" enctype="multipart/form-data">
+        <form id="interviewForm">
             <label for="company">Company:</label>
             <input type="text" id="company" name="company" required>
-            <br>
             <label for="post">Post:</label>
             <input type="text" id="post" name="post" required>
-            <br>
             <label for="resume">Resume (PDF):</label>
-            <input type="file" id="resume" name="resume" accept=".pdf" required>
-            <br>
+            <input type="file" id="resume" name="resume" accept=".pdf" !required>
             <label for="viewMode">View Mode:</label>
             <select id="viewMode" name="viewMode" required>
                 <option value="1">One by One</option>
                 <option value="2">Full List</option>
             </select>
-            <br>
-            <button type="submit">Generate Questions</button>
+            <div class="center-button">
+                <button type="submit">Generate Questions</button>
+            </div>
         </form>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-
-
