@@ -21,6 +21,11 @@ model = ChatGoogleGenerativeAI(
 )
 
 # Prompts
+# questions_prompt = ChatPromptTemplate.from_messages([
+#     ("system", "You are an interviewer preparing for a job interview."),
+#     ("user", "Please generate a list of interview questions for the position of {post} at {company}.")
+# ])
+
 questions_prompt = ChatPromptTemplate.from_messages([
     ("system", "You are an interviewer preparing for a job interview."),
     ("user", "Please generate a list of interview questions for the position of {post} at {company} based on the following resume: {resume}. Make sure questions align with the {company} interest and the {post} role based on the candidates resume. You can follow the template – "+
@@ -124,6 +129,9 @@ def feedback():
     answers = session.get('answers', {})
     feedback_messages = session.get('feedback', {})
 
+    if not questions or not answers:
+        return redirect(url_for('index'))
+
     feedback_display = []
     for question in questions:
         answer = answers.get(question, "No answer provided")
@@ -149,4 +157,3 @@ def next_question():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
