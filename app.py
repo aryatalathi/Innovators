@@ -57,8 +57,21 @@ def generate_interview_content(company, post, resume_text):
     # for testing truncating length of questions list
     return questions[:4]
 
+def get_model_feedback(question, answer):
+    feedback_prompt = ChatPromptTemplate.from_messages([
+        ("system", "You are an interviewer bot that provides only feedback. Based on the answer provided, please give feedback on how well the question was answered and provide suggestions for improvement if necessary."),
+        ("user", "Question : {question}" + "\n" + "Answer provided by candidate : {answer}")
+    ])
+    chain = feedback_prompt | model | output_parser
+    user_input = {"question": question, "answer": answer}
+    # Send the prompt to the model
+    feedback = chain.invoke(user_input)
+
+    return feedback
+
 @app.route('/')
 def index():
+    session.clear()
     return render_template('index.html')
 
 @app.route('/generate_interview', methods=['POST'])
@@ -83,8 +96,8 @@ def generate_interview():
 def questions_one_by_one():
     questions = session.get('questions', [])
     answers = session.get('answers', {})
-    print(questions)
-    print(answers)
+#     print(questions)
+#     print(answers)
 
     current_question = session.get('current_question', 0)
 
@@ -93,28 +106,27 @@ def questions_one_by_one():
 
     question = questions[current_question]
 
-    if request.method == 'POST':
-        user_answer = request.form['answer']
-        answers[question] = user_answer  # Store user's answer in session
-        session['answers'] = answers  # Update session with answers
-        
-        # Provide user's answer to the GPT model for feedback
-        feedback = model.ask(question, user_answer)
-
-        # Store the feedback in the session or another appropriate place
-        if 'feedback' not in session:
-            session['feedback'] = {}
-            print(feedback)
-        session['feedback'][question] = feedback
-        
-        # Move to the next question
-        session['current_question'] += 1
-        
-        # Check if it's the last question
-        if session['current_question'] >= len(questions):
-            return redirect(url_for('feedback'))  # Redirect to feedback page
-        
-        return redirect(url_for('questions_one_by_one'))
+#     if request.method == 'POST':
+#         user_answer = request.form['answer']
+#         answers[question] = user_answer  # Store user's answer in session
+#         session['answers'] = answers  # Update session with answers
+#
+#         # Provide user's answer to the GPT model for feedback
+#         feedback = model.ask(question, user_answer)
+#
+#         # Store the feedback in the session or another appropriate place
+#         if 'feedback' not in session:
+#             session['feedback'] = {}
+#             print(feedback)
+#         session['feedback'][question] = feedback
+#
+#         # Move to the next question
+#         session['current_question'] += 1
+#
+#         # Check if it's the last question
+#         if session['current_question'] >= len(questions):
+#             return redirect(url_for('feedback'))  # Redirect to feedback page
+#         return redirect(url_for('questions_one_by_one'))
 
     return render_template('questions_one_by_one.html', question=question, total=len(questions), current=current_question + 1)
 
@@ -142,9 +154,28 @@ def questions_full_list():
 
 @app.route('/next_question', methods=['POST'])
 def next_question():
-    session['current_question'] = session.get('current_question', 0) + 1
-    user_answer = request.form['answer']
-    print(user_answer)
+    questions = session.get('questions', [])
+    answers = session.get('answers', {})
+
+    current_question = session.get('current_question', 0)
+    question = questions[current_question]
+
+    if request.method == 'POST':
+        user_answer = request.form['answer']
+        answers[question] = user_answer
+        session['answers'] = answers
+
+        # Provide user's answer to the GPT model for feedback
+        feedback = get_model_feedback(question, user_answer)
+
+        # Store the feedback in the session or another appropriate place
+        if 'feedback' not in session:
+            session['feedback'] = {}
+        session['feedback'][question] = feedback
+
+        session['current_question'] = session.get('current_question', 0) + 1
+        if not questions or session['current_question'] >= len(questions):
+                return redirect(url_for('feedback'))
     return redirect(url_for('questions_one_by_one'))
 
 if __name__ == '__main__':
