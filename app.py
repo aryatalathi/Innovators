@@ -20,12 +20,6 @@ model = ChatGoogleGenerativeAI(
     convert_system_message_to_human=True
 )
 
-# Prompts
-# questions_prompt = ChatPromptTemplate.from_messages([
-#     ("system", "You are an interviewer preparing for a job interview."),
-#     ("user", "Please generate a list of interview questions for the position of {post} at {company}.")
-# ])
-
 questions_prompt = ChatPromptTemplate.from_messages([
     ("system", "You are an interviewer preparing for a job interview."),
     ("user", "Please generate a list of interview questions for the position of {post} at {company} based on the following resume: {resume}. Make sure questions align with the {company} interest and the {post} role based on the candidates resume. You can follow the template – "+
@@ -101,8 +95,6 @@ def generate_interview():
 def questions_one_by_one():
     questions = session.get('questions', [])
     answers = session.get('answers', {})
-#     print(questions)
-#     print(answers)
 
     current_question = session.get('current_question', 0)
 
@@ -110,28 +102,6 @@ def questions_one_by_one():
         return redirect(url_for('index'))
 
     question = questions[current_question]
-
-#     if request.method == 'POST':
-#         user_answer = request.form['answer']
-#         answers[question] = user_answer  # Store user's answer in session
-#         session['answers'] = answers  # Update session with answers
-#
-#         # Provide user's answer to the GPT model for feedback
-#         feedback = model.ask(question, user_answer)
-#
-#         # Store the feedback in the session or another appropriate place
-#         if 'feedback' not in session:
-#             session['feedback'] = {}
-#             print(feedback)
-#         session['feedback'][question] = feedback
-#
-#         # Move to the next question
-#         session['current_question'] += 1
-#
-#         # Check if it's the last question
-#         if session['current_question'] >= len(questions):
-#             return redirect(url_for('feedback'))  # Redirect to feedback page
-#         return redirect(url_for('questions_one_by_one'))
 
     return render_template('questions_one_by_one.html', question=question, total=len(questions), current=current_question + 1)
 
