@@ -5,15 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview Feedback</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(to bottom right, #007bff, #4CAF50);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Use min-height instead of height for responsive design */
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow: hidden; /* Hide overflow */
+            overflow-y: auto; /* Enable vertical scroll if needed */
+            max-height: 80vh; /* Limit container height and enable scrolling */
+        }
+        ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0;
+        }
+        ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            white-space: pre-wrap; /* Preserve line breaks and wrap text */
+            text-align: left; /* Align text to the left */
+            font-size: 16px; /* Adjust font size as needed */
+            margin: 0; /* Remove default margin */
+            padding: 10px; /* Add padding */
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <!-- <div class="container">
         <h1>Feedback</h1>
         <ul>
             {% for feedback_message in feedback_messages %}
                 <li>{{ feedback_message }}</li>
             {% endfor %}
         </ul>
+    </div> -->
+    <div class="container">
+        <h1>Improve your answers</h1>
+        {% for feedback_message in feedback_messages %}
+            <div class="question">
+                <h3>Question</h3>
+                {{ feedback_message[0] | replace('*', '') }}
+            </div>
+            <div class="na">
+                <h3>Your Answer</h3>
+                {{ feedback_message[1] | replace('*', '') }}
+            </div>
+            <div class="feedback">
+                <h3>Feedback</h3>
+                {{ feedback_message[2] | replace('(', '') | replace(')', '') }}
+            </div>
+        {% endfor %}
     </div>
 </body>
 </html>
