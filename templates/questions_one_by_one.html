@@ -3,54 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interview Questions Full List</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Interview Questions One by One</title>
+    <link rel="stylesheet" href="/static/style.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-image: linear-gradient(to bottom right, #007bff, #4CAF50);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            overflow: hidden; /* Hide overflow */
-            overflow-y: auto; /* Enable vertical scroll if needed */
-            height: 70vh; /* Example height, adjust as needed */
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(to bottom right, #007bff, #4CAF50);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.question-content {
+    padding: 10px 0;
+    text-align: left; 
+    margin: 0; 
+}
+
+.question-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left; 
+    width: 100%; 
+}
+
+input[type=text] {
+    width: calc(100% - 24px); 
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.next-btn, .back-btn, .feedback-btn {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 5px; 
+}
+
+.next-btn:hover, .back-btn:hover, .feedback-btn:hover {
+    background-color: #0056b3; 
+}
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Interview Questions</h1>
-        <ul>
-            {% for question in questions %}
-                <li>{{ question }}</li>
-            {% endfor %}
-        </ul>
+        <h1>Interview Question {{ current }} of {{ total }}</h1>
+        <div id="question" class="question-content">{{ question }}</div>
+        <form class="question-form" action="{{ url_for('next_question') }}" method="post">
+            <label for="answer">Your Answer:</label>
+            <input type="text" id="answer" name="answer" required>
+            <div class="btn-container">
+                <button type="submit" class="back-btn">Go Back</button>
+                <button type="submit" class="next-btn">Next Page</button>
+            </div>
+        </form>
+        <!-- {% if current == total %}
+        <form class="question-form" action="{{ url_for('feedback') }}" method="get">
+            <button type="submit" class="feedback-btn">Provide Feedback</button>
+        </form>
+        {% endif %} -->
     </div>
 </body>
 </html>
